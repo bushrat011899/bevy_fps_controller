@@ -14,7 +14,7 @@ pub fn map_camera_transform(
         ),
         With<FpsController>,
     >,
-    mut camera_query: Query<(&mut Transform, &Parent), Without<FpsController>>,
+    mut camera_query: Query<(&mut Transform, &Parent), (With<Camera>, Without<FpsController>)>,
 ) {
     for (mut camera_transform, player) in camera_query.iter_mut() {
         let Ok((mut player_transform, collider, controller, input)) = player_query.get_mut(player.get()) else {
@@ -34,10 +34,7 @@ pub fn map_camera_transform(
 
         let camera_yaw = match input.free_look {
             FreeLookState::Not => camera_yaw,
-            FreeLookState::Starting | FreeLookState::Looking => (input.yaw - controller.yaw).clamp(
-                controller.free_look_yaw_range.start,
-                controller.free_look_yaw_range.end,
-            ),
+            FreeLookState::Starting | FreeLookState::Looking => (input.yaw - controller.yaw),
             FreeLookState::Stopping => 0.0,
         };
 
