@@ -14,6 +14,8 @@ Inspired from Source engine movement, this plugin implements movement suitable f
 * Crouching (prevents falling off ledges), sprinting
 * Noclip mode
 * Configurable settings
+* Modular framework
+* Free-Look
 
 ### Examples
 
