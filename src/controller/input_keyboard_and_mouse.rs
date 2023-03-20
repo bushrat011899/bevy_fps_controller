@@ -78,7 +78,9 @@ pub fn keyboard_and_mouse_input(
         input.jump = key_input.pressed(bindings.jump);
         input.fly = key_input.just_pressed(bindings.fly);
         input.crouch = key_input.pressed(bindings.crouch);
-        input.free_look = input.free_look.evolve(key_input.pressed(bindings.free_look));
+        input.free_look = input
+            .free_look
+            .evolve(key_input.pressed(bindings.free_look));
     }
 }
 

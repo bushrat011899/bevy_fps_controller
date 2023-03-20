@@ -24,7 +24,7 @@ fn main() {
         .insert_resource(SimplePerformance {
             frames: 0.0,
             delta_time: 0.0,
-            frame_time: f32::INFINITY
+            frame_time: f32::INFINITY,
         })
         .add_plugins(DefaultPlugins)
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
@@ -150,7 +150,7 @@ struct MainScene {
 struct SimplePerformance {
     frames: f32,
     delta_time: f32,
-    frame_time: f32
+    frame_time: f32,
 }
 
 impl SimplePerformance {
