@@ -21,11 +21,6 @@ fn main() {
         })
         .insert_resource(ClearColor(Color::hex("D4F5F5").unwrap()))
         .insert_resource(RapierConfiguration::default())
-        .insert_resource(SimplePerformance {
-            frames: 0.0,
-            delta_time: 0.0,
-            frame_time: f32::INFINITY,
-        })
         .add_plugins(DefaultPlugins)
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
         // .add_plugin(RapierDebugRenderPlugin::default())
@@ -146,26 +141,6 @@ struct MainScene {
     is_loaded: bool,
 }
 
-#[derive(Resource)]
-struct SimplePerformance {
-    frames: f32,
-    delta_time: f32,
-    frame_time: f32,
-}
-
-impl SimplePerformance {
-    fn update(&mut self, delta_time: f32) {
-        self.frames += 1.0;
-        self.delta_time += delta_time;
-
-        if self.delta_time > 1.0 && self.frames > 0.0 {
-            self.frame_time = self.delta_time / self.frames;
-            self.frames = 0.0;
-            self.delta_time = 0.0;
-        }
-    }
-}
-
 fn scene_colliders(
     mut commands: Commands,
     mut main_scene: ResMut<MainScene>,
@@ -229,31 +204,20 @@ fn manage_cursor(
 }
 
 fn display_text(
-    time: Res<Time>,
-    mut perf: ResMut<SimplePerformance>,
     mut controller_query: Query<(&Transform, &Velocity)>,
     mut text_query: Query<&mut Text>,
 ) {
-    let dt = time.delta_seconds();
-
-    perf.update(dt);
-
-    let frame_time = perf.frame_time;
-    let fps = 1.0 / frame_time;
-
     for (transform, velocity) in &mut controller_query {
         for mut text in &mut text_query {
             text.sections[0].value = format!(
-                "vel: {:.2}, {:.2}, {:.2}\npos: {:.2}, {:.2}, {:.2}\nspd: {:.2}\nspf: {:.3}\nfps: {:3.0}",
+                "vel: {:.2}, {:.2}, {:.2}\npos: {:.2}, {:.2}, {:.2}\nspd: {:.2}",
                 velocity.linvel.x,
                 velocity.linvel.y,
                 velocity.linvel.z,
                 transform.translation.x,
                 transform.translation.y,
                 transform.translation.z,
-                velocity.linvel.xz().length(),
-                frame_time,
-                fps
+                velocity.linvel.xz().length()
             );
         }
     }
